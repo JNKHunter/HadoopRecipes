@@ -1,7 +1,12 @@
+import org.apache.hadoop.fs.FsUrlStreamHandlerFactory;
 import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Test;
 
+import java.io.BufferedReader;
 import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.net.URL;
 
 import static org.junit.Assert.*;
 
@@ -11,15 +16,30 @@ import static org.junit.Assert.*;
 public class HDFSFileReadTest {
     HDFSFileRead fileRead;
 
+    @BeforeClass
+    public static void beforeClass() throws Exception{
+        //This method can be called at most once per JVM
+        URL.setURLStreamHandlerFactory(new FsUrlStreamHandlerFactory());
+    }
+
     @Before
     public void setUp() throws Exception {
         fileRead = new HDFSFileRead();
     }
 
     @Test
-    public void getInputStream() throws Exception {
-        InputStream is = fileRead.getInputStream();
+    public void successfulInputStreamReturnsNotNull() throws Exception {
+        InputStream is = fileRead.getInputStream("hdfs://localhost:9000/quangle.txt");
         assertNotNull(is);
         is.close();
+    }
+
+    @Test
+    public void readInputStream() throws Exception{
+        InputStream is = fileRead.getInputStream("hdfs://localhost:9000/quangle.txt");
+        InputStreamReader isr = new InputStreamReader(is);
+        BufferedReader br = new BufferedReader(isr);
+        String line = br.readLine();
+        assertEquals("quangle",line);
     }
 }

@@ -12,10 +12,9 @@ public class HDFSFileRead {
 
     InputStream inputStream = null;
 
-    public InputStream getInputStream(){
+    public InputStream getInputStream(String hdfsUrl){
         try{
-            URL.setURLStreamHandlerFactory(new FsUrlStreamHandlerFactory());
-            inputStream = new URL("hdfs://localhost:9000/quangle.txt").openStream();
+            inputStream = new URL(hdfsUrl).openStream();
         } catch (MalformedURLException e) {
             e.printStackTrace();
             return null;
