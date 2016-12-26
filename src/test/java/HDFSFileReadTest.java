@@ -15,6 +15,7 @@ import static org.junit.Assert.*;
  */
 public class HDFSFileReadTest {
     HDFSFileRead fileRead;
+    String hdfsUrl = "hdfs://localhost:9000/quangle.txt";
 
     @BeforeClass
     public static void beforeClass() throws Exception{
@@ -29,14 +30,14 @@ public class HDFSFileReadTest {
 
     @Test
     public void successfulInputStreamReturnsNotNull() throws Exception {
-        InputStream is = fileRead.getInputStream("hdfs://localhost:9000/quangle.txt");
+        InputStream is = fileRead.getInputStream(hdfsUrl);
         assertNotNull(is);
         is.close();
     }
 
     @Test
     public void readInputStream() throws Exception{
-        InputStream is = fileRead.getInputStream("hdfs://localhost:9000/quangle.txt");
+        InputStream is = fileRead.getInputStream(hdfsUrl);
         InputStreamReader isr = new InputStreamReader(is);
         BufferedReader br = new BufferedReader(isr);
         String line = br.readLine();
