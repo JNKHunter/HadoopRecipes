@@ -18,10 +18,5 @@ public class HDFSFileSystemRead {
         InputStream in = null;
 
         return fs.open(new Path(hdfsUrl));
-
     }
-
-
-
-
 }
