@@ -8,6 +8,8 @@ import java.net.URI;
 
 /**
  * Created by jhunter on 12/26/16.
+ * Using FileSystem is a good alternative when working with HDSF in an environment
+ * where you cannot set URL.setURLStreamHandlerFactory
  */
 public class HDFSFileSystemRead {
 
