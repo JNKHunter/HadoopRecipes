@@ -10,7 +10,7 @@ public class FileCopyTest {
 
     @Before
     public void setUp() throws Exception {
-        fileCopy = new FileCopy("../resources/longtext.txt",
+        fileCopy = new FileCopy("src/test/resources/longtext.txt",
                 "hdfs://localhost:9000/user/jhunter/filecopy/longtext.txt");
     }
 
