@@ -22,6 +22,7 @@ public class FileCopy {
 
     public void copyFile() throws IOException {
         InputStream in = new BufferedInputStream(new FileInputStream(localSrc));
+
         Configuration conf = new Configuration();
         FileSystem fs = FileSystem.get(URI.create(destSrc), conf);
         OutputStream out = fs.create(new Path(destSrc), new Progressable() {
