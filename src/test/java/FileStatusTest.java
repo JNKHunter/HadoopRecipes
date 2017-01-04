@@ -2,8 +2,11 @@ import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.fs.FileSystem;
 import org.apache.hadoop.fs.Path;
 import org.apache.hadoop.hdfs.MiniDFSCluster;
+import org.junit.After;
 import org.junit.Before;
+import org.junit.Test;
 
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.OutputStream;
 
@@ -27,6 +30,22 @@ public class FileStatusTest {
         OutputStream out = fs.create(new Path("/dir/file"));
         out.write("content".getBytes("UTF-8"));
         out.close();
+    }
+
+    @After
+    public void tearDown() throws IOException{
+       if (fs != null) {
+           fs.close();
+       }
+
+       if (cluster != null) {
+           cluster.shutdown();
+       }
+    }
+
+    @Test(expected = FileNotFoundException.class)
+    public void throwsFileNotFoundForNonExistentFile() throws IOException{
+        fs.getFileStatus(new Path("no-such-file"));
     }
 
 }
