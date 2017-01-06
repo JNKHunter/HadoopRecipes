@@ -59,6 +59,8 @@ public class FileStatusTest {
         FileStatus stat = fs.getFileStatus(file);
         stat.getPath().toUri().getPath();
         assertThat(stat.getPath().toUri().getPath(), is(filePath));
+        assertThat(stat.isDirectory(), is(false));
+        assertThat(stat.getLen(), is (7L));
     }
 
 }
