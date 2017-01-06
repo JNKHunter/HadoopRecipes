@@ -1,4 +1,5 @@
 import org.apache.hadoop.conf.Configuration;
+import org.apache.hadoop.fs.FileStatus;
 import org.apache.hadoop.fs.FileSystem;
 import org.apache.hadoop.fs.Path;
 import org.apache.hadoop.hdfs.MiniDFSCluster;
@@ -10,6 +11,9 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.OutputStream;
 
+import static org.hamcrest.CoreMatchers.is;
+import static org.junit.Assert.assertThat;
+
 /**
  * Created by jhunter on 1/3/17.
  */
@@ -17,6 +21,7 @@ public class FileStatusTest {
 
     private MiniDFSCluster cluster;
     private FileSystem fs;
+    private String filePath = "/dir/file";
 
     @Before
     public void setUp() throws IOException {
@@ -27,7 +32,7 @@ public class FileStatusTest {
 
         cluster = new MiniDFSCluster.Builder(conf).build();
         fs = cluster.getFileSystem();
-        OutputStream out = fs.create(new Path("/dir/file"));
+        OutputStream out = fs.create(new Path(filePath));
         out.write("content".getBytes("UTF-8"));
         out.close();
     }
@@ -46,6 +51,14 @@ public class FileStatusTest {
     @Test(expected = FileNotFoundException.class)
     public void throwsFileNotFoundForNonExistentFile() throws IOException{
         fs.getFileStatus(new Path("no-such-file"));
+    }
+
+    @Test
+    public void fileStatusForFile() throws IOException {
+        Path file = new Path(filePath);
+        FileStatus stat = fs.getFileStatus(file);
+        stat.getPath().toUri().getPath();
+        assertThat(stat.getPath().toUri().getPath(), is(filePath));
     }
 
 }
