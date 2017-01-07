@@ -24,6 +24,8 @@ public class FileStatusTest {
     private FileSystem fs;
     private String filePath = "/dir/file";
     private String dirPath = "/dir";
+    private Path dir;
+    private Path file;
 
     @Before
     public void setUp() throws IOException {
@@ -34,6 +36,8 @@ public class FileStatusTest {
 
         cluster = new MiniDFSCluster.Builder(conf).build();
         fs = cluster.getFileSystem();
+        dir = new Path(dirPath);
+        file = new Path(filePath);
         OutputStream out = fs.create(new Path(filePath));
         out.write("content".getBytes("UTF-8"));
         out.close();
@@ -57,7 +61,6 @@ public class FileStatusTest {
 
     @Test
     public void fileStatusForFile() throws IOException {
-        Path file = new Path(filePath);
         FileStatus stat = fs.getFileStatus(file);
         stat.getPath().toUri().getPath();
         assertThat(stat.getPath().toUri().getPath(), is(filePath));
@@ -74,8 +77,7 @@ public class FileStatusTest {
 
     @Test
     public void fileStatusForDirectory() throws IOException {
-        Path file = new Path(dirPath);
-        FileStatus stat = fs.getFileStatus(file);
+        FileStatus stat = fs.getFileStatus(dir);
         stat.getPath().toUri().getPath();
         assertThat(stat.getPath().toUri().getPath(), is(dirPath));
         assertThat(stat.isDirectory(), is(true));
@@ -86,6 +88,13 @@ public class FileStatusTest {
         assertThat(stat.getOwner(), is(System.getProperty("user.name")));
         assertThat(stat.getGroup(), is("supergroup"));
         assertThat(stat.getPermission().toString(), is("rwxr-xr-x"));
+    }
+
+    @Test
+    public void checkForExistence() throws IOException {
+
+        assertThat(fs.exists(dir), is(true) );
+        assertThat(fs.exists(file), is(true) );
     }
 
 }
