@@ -63,6 +63,8 @@ public class FileStatusTest {
         assertThat(stat.isDirectory(), is(false));
         assertThat(stat.getLen(), is (7L));
         assertThat(stat.getModificationTime(), is(lessThanOrEqualTo(System.currentTimeMillis())));
+        assertThat(stat.getReplication(), is((short) 1));
+        assertThat(stat.getBlockSize(), is(128 * 1024* 1024L));
 
     }
 
