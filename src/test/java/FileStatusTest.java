@@ -23,6 +23,7 @@ public class FileStatusTest {
     private MiniDFSCluster cluster;
     private FileSystem fs;
     private String filePath = "/dir/file";
+    private String dirPath = "/dir";
 
     @Before
     public void setUp() throws IOException {
@@ -67,7 +68,24 @@ public class FileStatusTest {
         assertThat(stat.getBlockSize(), is(128 * 1024* 1024L));
         assertThat(stat.getOwner(), is(System.getProperty("user.name")));
         assertThat(stat.getGroup(), is("supergroup"));
+        assertThat(stat.getPermission().toString(), is("rw-r--r--"));
 
+    }
+
+    @Test
+    public void fileStatusForDirectory() throws IOException {
+        Path file = new Path(dirPath);
+        FileStatus stat = fs.getFileStatus(file);
+        stat.getPath().toUri().getPath();
+        assertThat(stat.getPath().toUri().getPath(), is(dirPath));
+        assertThat(stat.isDirectory(), is(true));
+        assertThat(stat.getLen(), is (0L));
+        assertThat(stat.getModificationTime(), is(lessThanOrEqualTo(System.currentTimeMillis())));
+        assertThat(stat.getReplication(), is((short) 0));
+        assertThat(stat.getBlockSize(), is(0L));
+        assertThat(stat.getOwner(), is(System.getProperty("user.name")));
+        assertThat(stat.getGroup(), is("supergroup"));
+        assertThat(stat.getPermission().toString(), is("rwxr-xr-x"));
     }
 
 }
