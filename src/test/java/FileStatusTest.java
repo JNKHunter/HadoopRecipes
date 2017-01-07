@@ -65,6 +65,8 @@ public class FileStatusTest {
         assertThat(stat.getModificationTime(), is(lessThanOrEqualTo(System.currentTimeMillis())));
         assertThat(stat.getReplication(), is((short) 1));
         assertThat(stat.getBlockSize(), is(128 * 1024* 1024L));
+        assertThat(stat.getOwner(), is(System.getProperty("user.name")));
+        assertThat(stat.getGroup(), is("supergroup"));
 
     }
 
