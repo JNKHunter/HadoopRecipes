@@ -12,6 +12,7 @@ import java.io.IOException;
 import java.io.OutputStream;
 
 import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.Matchers.lessThanOrEqualTo;
 import static org.junit.Assert.assertThat;
 
 /**
@@ -61,6 +62,8 @@ public class FileStatusTest {
         assertThat(stat.getPath().toUri().getPath(), is(filePath));
         assertThat(stat.isDirectory(), is(false));
         assertThat(stat.getLen(), is (7L));
+        assertThat(stat.getModificationTime(), is(lessThanOrEqualTo(System.currentTimeMillis())));
+
     }
 
 }
