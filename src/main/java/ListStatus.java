@@ -1,7 +1,9 @@
 import org.apache.hadoop.conf.Configuration;
+import org.apache.hadoop.fs.FileStatus;
 import org.apache.hadoop.fs.FileSystem;
 import org.apache.hadoop.fs.Path;
 
+import java.io.IOException;
 import java.net.URI;
 
 /**
@@ -30,5 +32,9 @@ public class ListStatus {
 
     public Path[] getPaths() {
         return paths;
+    }
+
+    public FileStatus[] getFilesStatuses() throws IOException {
+        return fs.listStatus(paths);
     }
 }
