@@ -13,6 +13,7 @@ import java.io.OutputStream;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.Matchers.lessThanOrEqualTo;
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertThat;
 
 /**
@@ -23,9 +24,11 @@ public class FileStatusTest {
     private MiniDFSCluster cluster;
     private FileSystem fs;
     private String filePath = "/dir/file";
+    private String filePath2 = "/dir/file2";
     private String dirPath = "/dir";
     private Path dir;
     private Path file;
+    private Path file2;
 
     @Before
     public void setUp() throws IOException {
@@ -38,8 +41,13 @@ public class FileStatusTest {
         fs = cluster.getFileSystem();
         dir = new Path(dirPath);
         file = new Path(filePath);
+        file2 = new Path(filePath2);
         OutputStream out = fs.create(new Path(filePath));
         out.write("content".getBytes("UTF-8"));
+        out.close();
+
+        out = fs.create(new Path(filePath2));
+        out.write("content2".getBytes("UTF-8"));
         out.close();
     }
 
@@ -62,6 +70,7 @@ public class FileStatusTest {
     @Test
     public void fileStatusForFile() throws IOException {
         FileStatus stat = fs.getFileStatus(file);
+        FileStatus[] stats = fs.globStatus(new Path("/dir/file*"));
         stat.getPath().toUri().getPath();
         assertThat(stat.getPath().toUri().getPath(), is(filePath));
         assertThat(stat.isDirectory(), is(false));
@@ -72,6 +81,7 @@ public class FileStatusTest {
         assertThat(stat.getOwner(), is(System.getProperty("user.name")));
         assertThat(stat.getGroup(), is("supergroup"));
         assertThat(stat.getPermission().toString(), is("rw-r--r--"));
+        assertEquals(2, stats.length);
 
     }
 
@@ -88,6 +98,9 @@ public class FileStatusTest {
         assertThat(stat.getOwner(), is(System.getProperty("user.name")));
         assertThat(stat.getGroup(), is("supergroup"));
         assertThat(stat.getPermission().toString(), is("rwxr-xr-x"));
+
+
+
     }
 
     @Test

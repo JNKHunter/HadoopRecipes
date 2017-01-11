@@ -1,6 +1,8 @@
+import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.fs.FileStatus;
 import org.apache.hadoop.fs.FsUrlStreamHandlerFactory;
 import org.apache.hadoop.fs.Path;
+import org.apache.hadoop.hdfs.MiniDFSCluster;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -40,7 +42,7 @@ public class ListStatusTest {
     @Test
     public void checkPathStringsStatus() throws Exception{
         fileStatuses = listStatus.getFilesStatuses();
-        assertEquals(2, fileStatuses.length);
+        assertEquals(3, fileStatuses.length);
     }
 
 
