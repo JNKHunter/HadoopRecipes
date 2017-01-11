@@ -13,9 +13,7 @@ import java.io.OutputStream;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.Matchers.lessThanOrEqualTo;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertThat;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 
 /**
  * Created by jhunter on 1/3/17.
@@ -111,6 +109,7 @@ public class FileStatusTest {
     @Test
     public void checkForDeletion() throws IOException {
         assertTrue(fs.delete(dir,true));
+        assertFalse(fs.delete(dir,true));
     }
 
 }
