@@ -15,6 +15,7 @@ import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.Matchers.lessThanOrEqualTo;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertThat;
+import static org.junit.Assert.assertTrue;
 
 /**
  * Created by jhunter on 1/3/17.
@@ -98,9 +99,6 @@ public class FileStatusTest {
         assertThat(stat.getOwner(), is(System.getProperty("user.name")));
         assertThat(stat.getGroup(), is("supergroup"));
         assertThat(stat.getPermission().toString(), is("rwxr-xr-x"));
-
-
-
     }
 
     @Test
@@ -108,6 +106,11 @@ public class FileStatusTest {
 
         assertThat(fs.exists(dir), is(true) );
         assertThat(fs.exists(file), is(true) );
+    }
+
+    @Test
+    public void checkForDeletion() throws IOException {
+        assertTrue(fs.delete(dir,true));
     }
 
 }
