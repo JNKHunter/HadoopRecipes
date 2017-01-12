@@ -81,7 +81,6 @@ public class FileStatusTest {
         assertThat(stat.getGroup(), is("supergroup"));
         assertThat(stat.getPermission().toString(), is("rw-r--r--"));
         assertEquals(2, stats.length);
-
     }
 
     @Test
@@ -101,7 +100,6 @@ public class FileStatusTest {
 
     @Test
     public void checkForExistence() throws IOException {
-
         assertThat(fs.exists(dir), is(true) );
         assertThat(fs.exists(file), is(true) );
     }
